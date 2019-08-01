@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nblog.mapper.TagsMapper">
+    <select id="getTags" resultType="com.nblog.bean.Tag">
+        SELECT id,name FROM tbtags AS t,tbblogtagrelation AS bt WHERE t.id = bt.tid AND bt.bid=#{bid}
+    </select>
+    <insert id="addTags">
+        INSERT IGNORE INTO tbtags(name, createtime) VALUES
+        <foreach collection="tags" item="tag" separator=", ">
+            (#{tag.name},now())
+        </foreach>
+    </insert>
+</mapper>
