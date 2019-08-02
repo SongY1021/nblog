@@ -14,6 +14,7 @@ public final class Return implements Serializable {
     private int code;
     private String msg;
     private Object reqData;
+    public static final Return OK = new Return(0, "success");
 
     public Return() {
         this.code = 0;

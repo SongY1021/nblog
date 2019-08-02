@@ -18,12 +18,13 @@ public class Blog {
     private Integer top;
     private String summary;
     private String mdContent;
-    private Integer delete;
     private String htmlContent;
+    private Long readCount;
+    private Long commentCount;
+    private Integer delete;
     private String createtime;
 
     private User user;
-    private Read read;
     private List<Tag> tags;
     private List<Comment> comments;
 
@@ -99,14 +100,6 @@ public class Blog {
         this.user = user;
     }
 
-    public Read getRead() {
-        return read;
-    }
-
-    public void setRead(Read read) {
-        this.read = read;
-    }
-
     public List<Tag> getTags() {
         return tags;
     }
@@ -139,6 +132,22 @@ public class Blog {
         this.top = top;
     }
 
+    public Long getReadCount() {
+        return readCount;
+    }
+
+    public void setReadCount(Long readCount) {
+        this.readCount = readCount;
+    }
+
+    public Long getCommentCount() {
+        return commentCount;
+    }
+
+    public void setCommentCount(Long commentCount) {
+        this.commentCount = commentCount;
+    }
+
     @Override
     public String toString() {
         return "Blog{" +
@@ -146,13 +155,15 @@ public class Blog {
                 ", title='" + title + '\'' +
                 ", typeid=" + typeid +
                 ", state=" + state +
+                ", top=" + top +
                 ", summary='" + summary + '\'' +
                 ", mdContent='" + mdContent + '\'' +
-                ", delete=" + delete +
                 ", htmlContent='" + htmlContent + '\'' +
+                ", readCount=" + readCount +
+                ", commentCount=" + commentCount +
+                ", delete=" + delete +
                 ", createtime='" + createtime + '\'' +
                 ", user=" + user +
-                ", read=" + read +
                 ", tags=" + tags +
                 ", comments=" + comments +
                 '}';

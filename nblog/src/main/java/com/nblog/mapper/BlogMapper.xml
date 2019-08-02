@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nblog.mapper.RolesMapper">
+    <select id="getBlogList" resultType="com.nblog.bean.Tag">
+        SELECT b.id,u.id,u.username,b.title,IFNULL(r.pv,0) AS readCount,b.top, b.createtime,b.state FROM tbblog AS b
+            INNER JOIN tbuser AS u ON b.uid = u.id
+            LEFT JOIN tbreads AS r ON b.id = r.bid
+        WHERE b.`delete`=0
+        <if test="uid != null">
+            b.uid=#{uid}
+        </if>
+        <if test="state != -1">
+            state = #{state}
+        </if>
+        <if test="state == -1">
+            state != 3
+        </if>
+        <if test="keywords != null">
+            title LIKE concat('%',#{keywords},'%')
+        </if>
+        ORDER b.modifytime DESC limit #{start},#{count}
+    </select>
+
+    <select id="getBlogCountByState">
+
+    </select>
+</mapper>
