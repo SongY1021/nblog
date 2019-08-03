@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: songyang03
@@ -15,5 +16,8 @@ import java.util.List;
 @Mapper
 public interface BlogMapper {
     List<Blog> getBlogList(@Param("uid") Long uid,@Param("state") Integer state, @Param("keywords") String keywords, @Param("start") Integer start, @Param("count") Integer count);
-//SELECT u.username,b.title,b. FROM tbblog AS b INNER JOIN tbuser AS u ON b.uid = u.id WHERE b.`delete`=0
+
+    int getBlogTotleCount(@Param("uid") Long uid,@Param("state") Integer state, @Param("keywords") String keywords);
+
+    Map<String, Integer> getTipCount();
 }

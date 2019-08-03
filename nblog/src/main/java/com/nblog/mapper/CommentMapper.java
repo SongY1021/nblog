@@ -13,5 +13,5 @@ import java.util.List;
  */
 @Mapper
 public interface CommentMapper {
-    Long getCount(Long bid);
+    Long getCommentCount(Long bid);
 }

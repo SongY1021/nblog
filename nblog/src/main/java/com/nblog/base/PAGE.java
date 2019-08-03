@@ -1,5 +1,7 @@
 package com.nblog.base;
 
+import org.springframework.util.StringUtils;
+
 /**
  * @Author: songyang03
  * @Date: 2019/8/2 11:49
@@ -26,5 +28,6 @@ public enum PAGE {
     public String getDesc() {
         return desc;
     }
+
 }
 
