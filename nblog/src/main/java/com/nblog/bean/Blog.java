@@ -1,6 +1,6 @@
 package com.nblog.bean;
 
-import com.nblog.base.FC;
+import com.nblog.base.STATE;
 
 import java.util.List;
 
@@ -16,6 +16,7 @@ public class Blog {
     private String username;
     private String title;
     private Integer typeid;
+    private String typeName;
     private Integer state;
     private Integer top;
     private String summary;
@@ -25,6 +26,7 @@ public class Blog {
     private Long commentCount;
     private Integer isdel;
     private String createtime;
+    private String modifytime;
 
     private User user;
     private List<Tag> tags;
@@ -62,16 +64,26 @@ public class Blog {
         this.title = title;
     }
 
-    public String getTypeid() {
-        return FC.DESC(this.typeid);
+    public Integer getTypeid() {
+        return this.typeid;
     }
 
     public void setTypeid(Integer typeid) {
         this.typeid = typeid;
     }
 
-    public String getState() {
-        return FC.DESC(this.state);
+    public String getTypeName() {
+        if(this.typeid != null){
+            return STATE.DESC(this.typeid);
+        }
+        return "";
+    }
+
+    public Integer getState() {
+//        if(this.state != null){
+//            return STATE.DESC(this.state);
+//        }
+        return this.state;
     }
 
     public void setState(Integer state) {
@@ -164,6 +176,14 @@ public class Blog {
 
     public void setCommentCount(Long commentCount) {
         this.commentCount = commentCount;
+    }
+
+    public String getModifytime() {
+        return modifytime;
+    }
+
+    public void setModifytime(String modifytime) {
+        this.modifytime = modifytime;
     }
 
     @Override

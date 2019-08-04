@@ -15,9 +15,11 @@ import java.util.Map;
  */
 @Mapper
 public interface BlogMapper {
-    List<Blog> getBlogList(@Param("uid") Long uid,@Param("state") Integer state, @Param("keywords") String keywords, @Param("start") Integer start, @Param("count") Integer count);
+    List<Blog> getBlogList(@Param("uid") Long uid,@Param("state") Integer state, @Param("keywords") String keywords, @Param("typeid") Integer typeid, @Param("start") Integer start, @Param("count") Integer count);
 
-    int getBlogTotleCount(@Param("uid") Long uid,@Param("state") Integer state, @Param("keywords") String keywords);
+    int getBlogTotleCount(@Param("uid") Long uid,@Param("state") Integer state, @Param("keywords") String keywords, @Param("typeid") Integer typeid);
 
     Map<String, Integer> getTipCount();
+
+    Blog getBlogDetail(@Param("bid") Long bid);
 }

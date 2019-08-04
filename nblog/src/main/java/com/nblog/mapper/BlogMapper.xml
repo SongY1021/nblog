@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nblog.mapper.BlogMapper">
     <select id="getBlogList" resultType="com.nblog.bean.Blog">
-        SELECT b.id,b.uid,u.username,b.title, b.typeid, IFNULL(r.pv,0) AS readCount,b.top, b.createtime,b.state FROM tbblog AS b
+        SELECT b.id,b.uid,u.username,b.title, b.typeid, IFNULL(r.pv,0) AS readCount,b.top, b.summary, b.createtime,b.state FROM tbblog AS b
             INNER JOIN tbuser AS u ON b.uid = u.id
             LEFT JOIN tbreads AS r ON b.id = r.bid
         WHERE b.isdel=0
@@ -19,6 +19,9 @@
         </if>
         <if test="keywords != null">
             AND title LIKE concat('%',#{keywords},'%')
+        </if>
+        <if test="typeid != null">
+            AND typeid = #{typeid}
         </if>
         ORDER BY b.modifytime, b.top DESC limit #{start},#{count};
     </select>
@@ -37,6 +40,9 @@
         <if test="keywords != null">
             AND title LIKE concat('%',#{keywords},'%')
         </if>
+        <if test="typeid != null">
+            AND typeid = #{typeid}
+        </if>
     </select>
 
     <select id="getTipCount" resultType="map">
@@ -47,4 +53,12 @@
           sum(IF(state = 3, 1, 0)) AS delCount
         FROM tbblog WHERE isdel = 0;
     </select>
+
+    <select id="getBlogDetail" resultType="com.nblog.bean.Blog">
+        SELECT b.id, u.username, b.title, b.typeid, b.top, IFNULL(r.pv,0) AS readCount,b.state, b.htmlContent, b.modifytime FROM tbblog AS b
+        INNER JOIN tbuser AS u ON b.uid = u.id
+        LEFT JOIN tbreads AS r ON b.id = r.bid
+        WHERE isdel=0 AND b.id=#{bid};
+    </select>
+
 </mapper>
