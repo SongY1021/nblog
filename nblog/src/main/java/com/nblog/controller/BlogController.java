@@ -53,4 +53,27 @@ public class BlogController {
             return new Return(0, "success", blog);
         }
     }
+
+    @RequestMapping(value = "/setstatus", method = RequestMethod.POST)
+    public Return setBlogStatus(@RequestParam(value = "bid") Long bid, @RequestParam(value = "opt") String opt, @RequestParam(value = "state") Integer state){
+        if(bid == null || opt == null || state == null){
+            return new Return(-1, "参数校验失败");
+        }
+        Blog blog = new Blog();
+        blog.setId(bid);
+        if(opt.equalsIgnoreCase("top")){
+            blog.setTop(state);
+        }else if(opt.equalsIgnoreCase("oncomment")){
+            blog.setOncomment(state);
+        }
+        Integer count = blogService.updateBlog(blog);
+        if(count > 0){
+            Map result = new HashMap();
+            result.put("count", count);
+            result.put("state", 0);
+            result.put("desc", "修改成功");
+            return new Return(0, "success", result);
+        }
+        return new Return(-1, "状态修改失败");
+    }
 }

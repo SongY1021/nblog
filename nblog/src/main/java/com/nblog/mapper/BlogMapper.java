@@ -22,4 +22,6 @@ public interface BlogMapper {
     Map<String, Integer> getTipCount();
 
     Blog getBlogDetail(@Param("bid") Long bid);
+
+    int updateBlog(Blog blog);
 }

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nblog.mapper.BlogMapper">
     <select id="getBlogList" resultType="com.nblog.bean.Blog">
-        SELECT b.id,b.uid,u.username,b.title, b.typeid, IFNULL(r.pv,0) AS readCount,b.top, b.summary, b.createtime,b.state FROM tbblog AS b
+        SELECT b.id,b.uid,u.username,b.title, b.typeid, IFNULL(r.pv,0) AS readCount,b.top, b.summary,b.oncomment, b.createtime,b.state FROM tbblog AS b
             INNER JOIN tbuser AS u ON b.uid = u.id
             LEFT JOIN tbreads AS r ON b.id = r.bid
         WHERE b.isdel=0
@@ -23,7 +23,7 @@
         <if test="typeid != null">
             AND typeid = #{typeid}
         </if>
-        ORDER BY b.modifytime, b.top DESC limit #{start},#{count};
+        ORDER BY b.modifytime DESC, b.top DESC limit #{start},#{count};
     </select>
 
     <select id="getBlogTotleCount" resultType="Integer">
@@ -60,5 +60,16 @@
         LEFT JOIN tbreads AS r ON b.id = r.bid
         WHERE isdel=0 AND b.id=#{bid};
     </select>
+
+    <update id="updateBlog" parameterType="com.nblog.bean.Blog">
+        UPDATE tbblog SET modifytime=now()
+        <if test="oncomment!=null">
+            ,oncomment=#{oncomment}
+        </if>
+        <if test="top!=null">
+            ,top=#{top}
+        </if>
+        WHERE id=#{id}
+    </update>
 
 </mapper>

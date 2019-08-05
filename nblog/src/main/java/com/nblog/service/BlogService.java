@@ -59,4 +59,8 @@ public class BlogService {
         }
         return blog;
     }
+
+    public int updateBlog(Blog blog){
+        return blogMapper.updateBlog(blog);
+    }
 }

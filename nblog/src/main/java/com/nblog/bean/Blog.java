@@ -24,6 +24,7 @@ public class Blog {
     private String htmlContent;
     private Long readCount;
     private Long commentCount;
+    private Integer oncomment;
     private Integer isdel;
     private String createtime;
     private String modifytime;
@@ -184,6 +185,14 @@ public class Blog {
 
     public void setModifytime(String modifytime) {
         this.modifytime = modifytime;
+    }
+
+    public Integer getOncomment() {
+        return oncomment;
+    }
+
+    public void setOncomment(Integer oncomment) {
+        this.oncomment = oncomment;
     }
 
     @Override
