@@ -62,9 +62,17 @@ public class BlogController {
         Blog blog = new Blog();
         blog.setId(bid);
         if(opt.equalsIgnoreCase("top")){
-            blog.setTop(state);
+            blog.setTop(1-state);
         }else if(opt.equalsIgnoreCase("oncomment")){
-            blog.setOncomment(state);
+            blog.setOncomment(1-state);
+        }else if(opt.equalsIgnoreCase("delete")){
+            if(state == STATE.STATE_DEFAULT.getCode() || state == STATE.STATE_DRAFT.getCode() ){
+                blog.setIsdel(1);
+            }
+            blog.setState(STATE.STATE_RECYCLE_BIN.getCode());
+        }else if(opt.equalsIgnoreCase("recovery")){
+            blog.setIsdel(0);
+            blog.setState(STATE.STATE_DRAFT.getCode());
         }
         Integer count = blogService.updateBlog(blog);
         if(count > 0){

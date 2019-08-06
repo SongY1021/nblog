@@ -23,7 +23,7 @@
         <if test="typeid != null">
             AND typeid = #{typeid}
         </if>
-        ORDER BY b.modifytime DESC, b.top DESC limit #{start},#{count};
+        ORDER BY b.top DESC, b.modifytime DESC limit #{start},#{count};
     </select>
 
     <select id="getBlogTotleCount" resultType="Integer">
@@ -68,6 +68,12 @@
         </if>
         <if test="top!=null">
             ,top=#{top}
+        </if>
+        <if test="isdel!=null">
+            ,isdel=#{isdel}
+        </if>
+        <if test="state!=null">
+            ,state=#{state}
         </if>
         WHERE id=#{id}
     </update>
