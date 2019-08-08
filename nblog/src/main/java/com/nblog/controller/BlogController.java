@@ -5,6 +5,7 @@ import com.nblog.base.STATE;
 import com.nblog.bean.Blog;
 import com.nblog.service.BlogService;
 import com.nblog.utils.UserUtil;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,5 +84,14 @@ public class BlogController {
             return new Return(0, "success", result);
         }
         return new Return(-1, "状态修改失败");
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public Return addBlog(Blog blog){
+        int result = blogService.addBlog(blog);
+        if(result != 1){
+            return new Return(-1, "文章发布失败");
+        }
+        return Return.OK;
     }
 }

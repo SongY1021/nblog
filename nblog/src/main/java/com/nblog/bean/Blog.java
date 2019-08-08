@@ -30,7 +30,7 @@ public class Blog {
     private String modifytime;
 
     private User user;
-    private List<Tag> tags;
+    private String[] tags;
     private List<Comment> comments;
 
     public Long getId() {
@@ -131,11 +131,15 @@ public class Blog {
         this.user = user;
     }
 
-    public List<Tag> getTags() {
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String[] getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(String[] tags) {
         this.tags = tags;
     }
 

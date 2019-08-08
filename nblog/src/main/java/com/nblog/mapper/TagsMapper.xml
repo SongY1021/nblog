@@ -3,8 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nblog.mapper.TagsMapper">
-    <select id="getTags" resultType="com.nblog.bean.Tag">
-        SELECT t.id,name FROM tbtags AS t,tbblogtagrelation AS bt WHERE t.id = bt.tid AND bt.bid=#{bid}
+    <select id="getTags" resultType="String">
+        SELECT name FROM tbtags AS t,tbblogtagrelation AS bt WHERE t.id = bt.tid AND bt.bid=#{bid}
+    </select>
+    <select id="getTagsIdByTagName" resultType="long">
+        SELECT id FROM tbtags WHERE name IN
+        <foreach collection="tagNames" item="name" separator="," open="(" close=")">
+            #{name}
+        </foreach>
     </select>
     <insert id="addTags">
         INSERT IGNORE INTO tbtags(name, createtime) VALUES
@@ -12,4 +18,13 @@
             (#{tag.name},now())
         </foreach>
     </insert>
+    <insert id="addTagRelation">
+        INSERT IGNORE INTO tbtags(bid, tid, createtime) VALUES
+        <foreach collection="tags" item="tag" separator=", ">
+            (#{bid},#{tag.id},now())
+        </foreach>
+    </insert>
+    <delete id="delTagsByBid" parameterType="Long">
+        DELETE FROM tbblogtagrelation WHERE bid=#{bid}
+    </delete>
 </mapper>

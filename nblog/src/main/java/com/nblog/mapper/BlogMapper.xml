@@ -55,7 +55,7 @@
     </select>
 
     <select id="getBlogDetail" resultType="com.nblog.bean.Blog">
-        SELECT b.id, u.username, b.title, b.typeid, b.top, IFNULL(r.pv,0) AS readCount,b.state, b.htmlContent, b.modifytime FROM tbblog AS b
+        SELECT b.id, u.username, b.title, b.typeid, b.top, IFNULL(r.pv,0) AS readCount,b.state,b.mdContent, b.htmlContent, b.modifytime FROM tbblog AS b
         INNER JOIN tbuser AS u ON b.uid = u.id
         LEFT JOIN tbreads AS r ON b.id = r.bid
         WHERE isdel=0 AND b.id=#{bid};
@@ -75,7 +75,30 @@
         <if test="state!=null">
             ,state=#{state}
         </if>
+        <if test="title!=null AND title != ''">
+            ,title=#{title}
+        </if>
+        <if test="mdContent!=null AND mdContent != ''">
+            ,mdContent=#{mdContent}
+        </if>
+        <if test="htmlContent!=null AND htmlContent != ''">
+            ,htmlContent=#{htmlContent}
+        </if>
+        <if test="typeid!=null">
+            ,typeid=#{typeid}
+        </if>
+        <if test="summary!=null">
+            ,summary=#{summary}
+        </if>
         WHERE id=#{id}
     </update>
+
+    <insert id="addBlog" parameterType="com.nblog.bean.Blog">
+      INSERT INTO ncodeblog.tbblog ( title, typeid, uid, state, summary, mdContent, htmlContent, createtime, modifytime )
+      VALUES
+      (
+        #{title},#{typeid},#{uid,},#{state},#{summary},#{mdContent},#{htmlContent},now(),now()
+      );
+    </insert>
 
 </mapper>

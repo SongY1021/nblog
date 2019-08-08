@@ -6,6 +6,7 @@ import com.nblog.mapper.BlogMapper;
 import com.nblog.mapper.CommentMapper;
 import com.nblog.mapper.TagsMapper;
 import com.nblog.utils.PageUtils;
+import com.nblog.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -54,7 +55,7 @@ public class BlogService {
     public Blog getBlogDetail(Long bid){
         Blog blog = blogMapper.getBlogDetail(bid);
         if(blog != null){
-            List<Tag> tagList = tagsMapper.getTags(bid);
+            String[] tagList = tagsMapper.getTags(bid);
             blog.setTags(tagList);
         }
         return blog;
@@ -62,5 +63,42 @@ public class BlogService {
 
     public int updateBlog(Blog blog){
         return blogMapper.updateBlog(blog);
+    }
+
+    public int addBlog(Blog blog){
+        int result = -1;
+        //截取文章摘要
+        if(!StringUtils.isEmpty(blog.getSummary())){
+            String stripHtml = stripHtml(blog.getHtmlContent());
+            blog.setSummary(stripHtml.substring(0, stripHtml.length() > 50 ? 50 : stripHtml.length()));
+        }
+        if(StringUtils.isEmpty(blog.getId())){
+            blog.setUid(UserUtil.getCurrentUser().getId());
+            result = blogMapper.addBlog(blog);
+            if(result != 1) {
+                return result;
+            }
+        }else{
+            result = blogMapper.updateBlog(blog);
+            if(result != 1) {
+                return result;
+            }
+        }
+        if (!StringUtils.isEmpty(blog.getTags())
+                && blog.getTags().length>0){
+            int tags = addTags(blog.getTags());
+        }
+        return result;
+    }
+
+    private int addTags(String[] tags){
+        return -1;
+    }
+
+    private String stripHtml(String content){
+        content = content.replaceAll("<p .*?>", "");
+        content = content.replaceAll("<br\\s*/?>", "");
+        content = content.replaceAll("\\<.*?>", "");
+        return content;
     }
 }

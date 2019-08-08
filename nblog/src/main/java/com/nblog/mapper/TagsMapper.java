@@ -2,6 +2,7 @@ package com.nblog.mapper;
 
 import com.nblog.bean.Tag;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,7 +15,15 @@ import java.util.List;
 @Mapper
 public interface TagsMapper {
     //获取标签信息
-    List<Tag> getTags(Long bid);
+    String[] getTags(Long bid);
     //增加标签
     int addTag(List<Tag> tags);
+
+    List<Long> getTagIdByName(@Param("tagNames") String[] tagNames);
+
+    int addTags(@Param("tags") String[] tags);
+
+    int addTagRelation(@Param("tags") List<Long> tags, @Param("bid") Long bid);
+
+    int delTagsByBid(Long bid);
 }

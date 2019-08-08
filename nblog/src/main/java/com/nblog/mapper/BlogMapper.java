@@ -24,4 +24,6 @@ public interface BlogMapper {
     Blog getBlogDetail(@Param("bid") Long bid);
 
     int updateBlog(Blog blog);
+
+    int addBlog(Blog blog);
 }
