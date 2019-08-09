@@ -75,13 +75,13 @@
         <if test="state!=null">
             ,state=#{state}
         </if>
-        <if test="title!=null AND title != ''">
+        <if test="title!=null and title != ''">
             ,title=#{title}
         </if>
-        <if test="mdContent!=null AND mdContent != ''">
+        <if test="mdContent!=null and mdContent != ''">
             ,mdContent=#{mdContent}
         </if>
-        <if test="htmlContent!=null AND htmlContent != ''">
+        <if test="htmlContent!=null and htmlContent != ''">
             ,htmlContent=#{htmlContent}
         </if>
         <if test="typeid!=null">
@@ -93,7 +93,7 @@
         WHERE id=#{id}
     </update>
 
-    <insert id="addBlog" parameterType="com.nblog.bean.Blog">
+    <insert id="addBlog" parameterType="com.nblog.bean.Blog" useGeneratedKeys="true" keyProperty="id">
       INSERT INTO ncodeblog.tbblog ( title, typeid, uid, state, summary, mdContent, htmlContent, createtime, modifytime )
       VALUES
       (

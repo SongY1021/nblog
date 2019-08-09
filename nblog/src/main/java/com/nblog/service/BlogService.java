@@ -7,6 +7,8 @@ import com.nblog.mapper.CommentMapper;
 import com.nblog.mapper.TagsMapper;
 import com.nblog.utils.PageUtils;
 import com.nblog.utils.UserUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,6 +25,8 @@ import java.util.Map;
  */
 @Service
 public class BlogService {
+    private static final Logger LOG = LoggerFactory.getLogger(BlogService.class);
+
     @Autowired
     BlogMapper blogMapper;
     @Autowired
@@ -68,17 +72,17 @@ public class BlogService {
     public int addBlog(Blog blog){
         int result = -1;
         //截取文章摘要
-        if(!StringUtils.isEmpty(blog.getSummary())){
+        if(StringUtils.isEmpty(blog.getSummary())){
             String stripHtml = stripHtml(blog.getHtmlContent());
-            blog.setSummary(stripHtml.substring(0, stripHtml.length() > 50 ? 50 : stripHtml.length()));
+            blog.setSummary(stripHtml.substring(0, stripHtml.length() > 100 ? 100 : stripHtml.length()));
         }
-        if(StringUtils.isEmpty(blog.getId())){
+        if(StringUtils.isEmpty(blog.getId())){//插入新文章
             blog.setUid(UserUtil.getCurrentUser().getId());
             result = blogMapper.addBlog(blog);
             if(result != 1) {
                 return result;
             }
-        }else{
+        }else{//更新文章
             result = blogMapper.updateBlog(blog);
             if(result != 1) {
                 return result;
@@ -86,15 +90,33 @@ public class BlogService {
         }
         if (!StringUtils.isEmpty(blog.getTags())
                 && blog.getTags().length>0){
-            int tags = addTags(blog.getTags());
+            int tags = addTags(blog.getTags(), blog.getId());
+            LOG.info("文章【"+blog.getId()+"】,插入了"+tags+"个标签");
         }
         return result;
     }
 
-    private int addTags(String[] tags){
-        return -1;
+    /**
+     * 插入标签
+     * @param tags
+     * @param bid
+     * @return
+     */
+    private int addTags(String[] tags, Long bid){
+        int tagCount = tagsMapper.addTags(tags);
+        List<Long> tagIds = tagsMapper.getTagIdByName(tags);
+        if(StringUtils.isEmpty(tagIds) || tagIds.size() < 1){
+            return -1;
+        }
+        int tagRelationCount = tagsMapper.addTagRelation(tagIds, bid);
+        return tagRelationCount;
     }
 
+    /**
+     * 截取摘要
+     * @param content
+     * @return
+     */
     private String stripHtml(String content){
         content = content.replaceAll("<p .*?>", "");
         content = content.replaceAll("<br\\s*/?>", "");
