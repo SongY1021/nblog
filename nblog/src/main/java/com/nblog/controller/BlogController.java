@@ -1,17 +1,33 @@
 package com.nblog.controller;
 
+import com.nblog.base.Env;
 import com.nblog.base.Return;
 import com.nblog.base.STATE;
 import com.nblog.bean.Blog;
 import com.nblog.service.BlogService;
+import com.nblog.utils.BaseUtils;
 import com.nblog.utils.UserUtil;
 import com.sun.org.apache.regexp.internal.RE;
+import org.apache.commons.io.IOUtils;
+import org.apache.tomcat.jni.Local;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author: songyang03
@@ -24,6 +40,10 @@ import java.util.Map;
 public class BlogController {
     @Autowired
     BlogService blogService;
+    @Autowired
+    Environment env;
+
+    private static final Logger LOG = LoggerFactory.getLogger(BlogController.class);
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Return getBlogList(@RequestParam(value = "state", defaultValue = "-1") Integer state, @RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "count", defaultValue = "6") Integer count, String keywords, Integer typeid){
@@ -95,5 +115,41 @@ public class BlogController {
             return new Return(-1, "文章发布失败");
         }
         return Return.OK;
+    }
+
+    @RequestMapping(value = "/uploadimg", method = RequestMethod.POST)
+    public Return uploadImg(HttpServletRequest req, MultipartFile image) {
+        if(StringUtils.isEmpty(image)){
+            return new Return(-1, "error", "图片上传失败, 图片为空");
+        }
+        //1.初始化文件地址
+        StringBuffer url = new StringBuffer();
+        //2.初始化文件存放位置
+        String filePath = env.getProperty("img.upload.path", "/blogimg/") + LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        //3.获取绝对路径
+        String imgFolderPath = req.getServletContext().getRealPath(filePath);
+        //3.初始化文件夹
+        File imgFolder = new File(imgFolderPath);
+        if(!imgFolder.exists()){
+            imgFolder.mkdirs();
+        }
+        url.append(req.getScheme())
+                .append("://")
+                .append(req.getServerName())
+                .append(":")
+                .append(req.getServerPort())
+                .append(req.getContextPath())
+                .append(filePath);
+        String imgName = BaseUtils.UUID() + "_" + image.getOriginalFilename().replace(" ","");
+        try {
+            IOUtils.write(image.getBytes(), new FileOutputStream(new File(imgFolder, imgName)));
+            url.append("/").append(imgName);
+            Map data = new HashMap();
+            data.put("imgPath", url.toString());
+            return new Return(0, "success", data);
+        } catch (IOException e) {
+            LOG.error("图片上传失败！", e.getMessage());
+        }
+        return new Return(-1, "error", "图片上传失败");
     }
 }

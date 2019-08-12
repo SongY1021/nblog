@@ -13,12 +13,14 @@ import java.util.Map;
 public final class Return implements Serializable {
     private int code;
     private String msg;
+    private String text;
     private Object reqData;
-    public static final Return OK = new Return(0, "success");
+    public static final Return OK = new Return(0, "success", "成功");
 
     public Return() {
         this.code = 0;
         this.msg = "";
+        this.text = "";
         this.reqData = new HashMap();
     }
 
@@ -28,9 +30,22 @@ public final class Return implements Serializable {
         this.reqData = new HashMap();
     }
 
+    public Return(int code, String msg, String text) {
+        this.code = code;
+        this.msg = msg;
+        this.text = text;
+        this.reqData = new HashMap();
+    }
+
     public Return(int code, String msg, Object reqData) {
         this.code = code;
         this.msg = msg;
+        this.reqData = reqData;
+    }
+    public Return(int code, String msg, String text, Object reqData) {
+        this.code = code;
+        this.msg = msg;
+        this.text = text;
         this.reqData = reqData;
     }
 
@@ -57,6 +72,14 @@ public final class Return implements Serializable {
     public void setReqData(Object reqData) {
 
         this.reqData = reqData;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
