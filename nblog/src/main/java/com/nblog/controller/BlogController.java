@@ -70,6 +70,8 @@ public class BlogController {
             if(state == STATE.STATE_DEFAULT.getCode() || state == STATE.STATE_DRAFT.getCode() ){
                 blog.setIsdel(1);
             }
+            blog.setTop(0);
+            blog.setOncomment(1);
             blog.setState(STATE.STATE_RECYCLE_BIN.getCode());
         }else if(opt.equalsIgnoreCase("recovery")){
             blog.setIsdel(0);

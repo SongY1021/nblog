@@ -14,14 +14,14 @@
     </select>
     <insert id="addTags">
         INSERT IGNORE INTO tbtags(name, createtime) VALUES
-        <foreach collection="tags" item="tag" separator=", ">
-            (#{tag.name},now())
+        <foreach collection="tags" item="name" separator=", ">
+            (#{name},now())
         </foreach>
     </insert>
     <insert id="addTagRelation">
-        INSERT IGNORE INTO tbtags(bid, tid, createtime) VALUES
+        INSERT IGNORE INTO tbblogtagrelation(bid, tid, createtime) VALUES
         <foreach collection="tags" item="tag" separator=", ">
-            (#{bid},#{tag.id},now())
+            (#{bid},#{tag},now())
         </foreach>
     </insert>
     <delete id="delTagsByBid" parameterType="Long">

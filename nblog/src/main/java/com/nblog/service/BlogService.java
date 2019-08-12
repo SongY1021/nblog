@@ -104,10 +104,11 @@ public class BlogService {
      */
     private int addTags(String[] tags, Long bid){
         int tagCount = tagsMapper.addTags(tags);
-        List<Long> tagIds = tagsMapper.getTagIdByName(tags);
+        List<Long> tagIds = tagsMapper.getTagsIdByTagName(tags);
         if(StringUtils.isEmpty(tagIds) || tagIds.size() < 1){
             return -1;
         }
+        tagsMapper.delTagsByBid(bid);
         int tagRelationCount = tagsMapper.addTagRelation(tagIds, bid);
         return tagRelationCount;
     }

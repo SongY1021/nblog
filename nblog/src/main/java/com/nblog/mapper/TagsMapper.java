@@ -19,7 +19,7 @@ public interface TagsMapper {
     //增加标签
     int addTag(List<Tag> tags);
 
-    List<Long> getTagIdByName(@Param("tagNames") String[] tagNames);
+    List<Long> getTagsIdByTagName(@Param("tagNames") String[] tagNames);
 
     int addTags(@Param("tags") String[] tags);
 
