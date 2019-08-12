@@ -70,11 +70,11 @@
 			</resource>
 			<resource>
 				<directory>src/main/resources</directory>
-				<excludes>
-					<exclude>**/*.properties</exclude>
-					<exclude>**/logback.xml</exclude>
-					<exclude>**/*.yml</exclude>
-				</excludes>
+				<!--<excludes>-->
+					<!--<exclude>**/*.properties</exclude>-->
+					<!--<exclude>**/logback.xml</exclude>-->
+					<!--<exclude>**/*.yml</exclude>-->
+				<!--</excludes>-->
 			</resource>
 		</resources>
 		<plugins>
