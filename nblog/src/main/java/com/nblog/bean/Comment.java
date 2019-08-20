@@ -1,5 +1,6 @@
 package com.nblog.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,8 @@ import java.util.List;
  * @Email: syang_010@163.com
  * @Description:
  */
-public class Comment {
+public class Comment implements Serializable {
+    private static final long serialVersionUID = 1L;
     private Long id;
     private Long bid;
     private Long uid;

@@ -1,12 +1,14 @@
 package com.nblog.bean;
 
+import java.io.Serializable;
+
 /**
  * @Author: songyang03
  * @Date: 2019/7/18 10:48
  * @Email: syang_010@163.com
  * @Description:
  */
-public class Role {
+public class Role implements Serializable {
     private Long id;
     private String name;
 

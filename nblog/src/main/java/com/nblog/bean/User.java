@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +15,8 @@ import java.util.List;
  * @Email: syang_010@163.com
  * @Description:
  */
-public class User implements UserDetails {
+public class User implements UserDetails,Serializable {
+    private static final long serialVersionUID = 1L;
     private Long id;
     private String username;
     private String password;
@@ -55,8 +57,10 @@ public class User implements UserDetails {
     @Override
     public List< GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+        if(roles != null){
+            for (Role role : roles) {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+            }
         }
         return authorities;
     }

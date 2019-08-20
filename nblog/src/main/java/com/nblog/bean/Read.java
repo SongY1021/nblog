@@ -1,12 +1,14 @@
 package com.nblog.bean;
 
+import java.io.Serializable;
+
 /**
  * @Author: songyang03
  * @Date: 2019/8/1 10:19
  * @Email: syang_010@163.com
  * @Description:
  */
-public class Read {
+public class Read implements Serializable {
     private Long id;
     private Long bid;
     private Long uid;

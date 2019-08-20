@@ -2,6 +2,7 @@ package com.nblog.bean;
 
 import com.nblog.base.STATE;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  * @Email: syang_010@163.com
  * @Description:
  */
-public class Blog {
+public class Blog implements Serializable {
     private Long id;
     private Long uid;
     private String username;

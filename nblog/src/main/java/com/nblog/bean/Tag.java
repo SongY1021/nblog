@@ -1,12 +1,14 @@
 package com.nblog.bean;
 
+import java.io.Serializable;
+
 /**
  * @Author: songyang03
  * @Date: 2019/8/1 10:25
  * @Email: syang_010@163.com
  * @Description:
  */
-public class Tag {
+public class Tag implements Serializable {
     private Long id;
     private String name;
     private String createtime;
